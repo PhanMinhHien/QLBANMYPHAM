@@ -5,15 +5,13 @@ create table SanPham
 IdSanPham int IDENTITY(1,1) PRIMARY KEY ,
 IdDanhMucSanPham int,
 TenSanPham nvarchar(200),
-DuLieuHinhSanPham image,
+DuLieuHinhSanPham varchar(1000),
 MoTa nvarchar(MAX),
 Gia int
 )
 
 
 drop table SanPham
-
-
 drop table GioHang
 drop table ChiTietDonHang
 
@@ -90,6 +88,19 @@ ADD FOREIGN KEY (IdDonHang) REFERENCES DonHang(IdDonHang);
 
 
 
+
+
+
+drop proc sp_LaySP
+
+
+drop proc sp_ThemSP
+
+drop proc sp_SuaSP
+
+drop proc sp_XoaSP
+
+
 ----------------------San Pham--------------------------
 --laysp
 CREATE PROC sp_laySP
@@ -97,14 +108,14 @@ AS
 	SELECT *
 	FROM SanPham
 -----	them sp
-CREATE PROC sp_themSP(@IdDanhMucSanPham int,@TenSanPham nvarchar(200),@DuLieuHinhSanPham image,@MoTa nvarchar (MAX) ,@Gia int)
+CREATE PROC sp_themSP(@IdDanhMucSanPham int,@TenSanPham nvarchar(200),@DuLieuHinhSanPham varchar(1000),@MoTa nvarchar (MAX) ,@Gia int)
 AS INSERT INTO SanPham VALUES ( @IdDanhMucSanPham, @TenSanPham, @DuLieuHinhSanPham,@MoTa,@Gia)
 -----xoa sp
 CREATE PROC sp_xoaSP (@IdSanPham int)
 AS
 DELETE FROM SanPham WHERE IdSanPham = @IdSanPham
 -----sua sp
-CREATE PROC sp_suaSP(@IdSanPham int,@IdDanhMucSanPham int,@TenSanPham nvarchar(200),@DuLieuHinhSanPham image,@MoTa nvarchar (MAX) ,@Gia int)
+CREATE PROC sp_suaSP(@IdSanPham int,@IdDanhMucSanPham int,@TenSanPham nvarchar(200),@DuLieuHinhSanPham varchar(1000),@MoTa nvarchar (MAX) ,@Gia int)
 AS
 UPDATE SanPham
 SET  IdDanhMucSanPham = @IdDanhMucSanPham, TenSanPham = @TenSanPham ,DuLieuHinhSanPham = @DuLieuHinhSanPham, Mota = @MoTa,Gia = @Gia
@@ -138,7 +149,6 @@ SET  HoTen = @HoTen, TenDangNhap = @TenDangNhap ,MatKhau = @MatKhau, DiaChi = @D
 
 
 
-
 ----------------------Gio Hang--------------------------
 --lay gh
 CREATE PROC sp_layGH
@@ -159,6 +169,12 @@ UPDATE GioHang
 SET  IdSanPham =@IdSanPham ,SoLuong = @SoLuong
  WHERE IdGioHang = @IdGioHang 
  
+ 
+ 
+ 
+ 
+ exec  sp_laySP
+
  
  
  ----------------------Don Hang--------------------------
@@ -230,7 +246,7 @@ SET  IdSanPham = @IdSanPham , IdDonHang = @IdDonHang ,SoLuongSanPham = @SoLuongS
  
  
  Select P.* from SanPham P,DanhMucSanPham T
- where P.IdDanhMucSanPham = T.IdDanhMucSanPham AND T.IdDanhMucSanPham = 2
+ where P.IdDanhMucSanPham = T.IdDanhMucSanPham AND T.IdDanhMucSanPham = 1
  
  
  
